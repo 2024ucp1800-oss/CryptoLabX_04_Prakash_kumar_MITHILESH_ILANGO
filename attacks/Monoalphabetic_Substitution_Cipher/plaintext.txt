@@ -1,0 +1,46 @@
+of occurrences of the ith letter of the alphabet in the ciphertext divided by
+the length of the ciphertext. If the key is k, then pi should be roughly equal
+to qi+k for all i, because the ith letter is mapped to the (i + k)th letter. (We
+use i+k instead of the more cumbersome [i+k mod 26].) Thus, if we compute
+Ij
+def
+=
+25∑
+i=0
+pi · qi+j
+for each value of j ∈ {0, . . . , 25}, then we expect to find that Ik ≈ 0.065
+(where k is the actual key), whereas Ij for j 6 = k will be different from 0.065.
+This leads to a key-recovery attack that is easy to automate: compute Ij for
+all j, and then output the value k for which Ik is closest to 0.065.
+The Vigen`ere (poly-alphabetic shift) cipher. The statistical attack on
+the mono-alphabetic substitution cipher can be carried out because the key
+defines a fixed mapping that is applied letter-by-letter to the plaintext. Such
+an attack could be thwarted by using a poly-alphabetic substitution cipher
+where the key instead defines a mapping that is applied on blocks of plaintext
+characters. Here, for example, a key might map the 2-character block ab to
+DZ while mapping ac to TY; note that the plaintext character a does not get
+mapped to a fixed ciphertext character. Poly-alphabetic substitution ciphers
+“smooth out” the frequency distribution of characters in the ciphertext and
+make it harder to perform statistical analysis.
+The Vigen`ere cipher, a special case of the above also called the poly-
+alphabetic shift cipher, works by applying several independent instances of
+the shift cipher in sequence. The key is now viewed as a string of letters; en-
+cryption is done by shifting each plaintext character by the amount indicated
+by the next character of the key, wrapping around in the key when necessary.
+(This degenerates to the shift cipher if the key has length 1.) For example,
+encryption of the message tellhimaboutme using the key cafe would work
+as follows:
+Plaintext: tellhimaboutme
+Key (repeated): cafecafecafeca
+Ciphertext: VEQPJIREDOZXOE
+(The key need not be an English word.) This is exactly the same as encrypting
+the first, fifth, ninth, . . . characters with the shift cipher and key c; the second,
+sixth, tenth, . . . characters with key a; the third, seventh, . . . characters
+with f; and the fourth, eighth, . . . characters with e. Notice that in the above
+example l is mapped once to Q and once to P. Furthermore, the ciphertext
+character E is sometimes obtained from e and sometimes from a. Thus, the
+character frequencies of the ciphertext are “smoothed out,” as desired.
+If the key is sufficiently long, cracking this cipher appears daunting. Indeed,
+it had been considered by many to be “unbreakable,” and although it was
+invented in the 16th century, a systematic attack on the scheme was only
+devised hundreds of years later.
