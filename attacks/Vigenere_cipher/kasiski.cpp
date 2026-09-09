@@ -26,7 +26,6 @@ unordered_map<string, vector<int>> find_repeated_patterns(int n, string& final) 
         string seq = final.substr(i, n);
         mp[seq].push_back(i);
     }
-
     return mp;
 }
 
@@ -45,10 +44,34 @@ vector<int> calculate_distances(unordered_map<string,vector<int>>&mp){
   return distance;
 }
 
-vector<int>find_factors(vector<int>&dis){
-  
+map<int, int> find_factors(vector<int>& distances) {
+    map<int, int> factor_count;
+    for (int d : distances) {
+        for (int i = 2; i <= d; i++) {
+            if (d % i == 0) {
+                factor_count[i]++;
+            }
+        }
+    }
+    return factor_count;
 }
-
+void kasiski(string &final) {
+    map<int, int> total_factors;
+    for(int n = 3; n <= 5; n++) {
+        auto patterns = find_repeated_patterns(n, final);
+        vector<int> distances = calculate_distances(patterns);
+        map<int, int> factors = find_factors(distances);
+        for(auto &p : factors) {
+            total_factors[p.first] += p.second;
+        }
+    }
+    cout << "\nKasiski Analysis\n";
+    cout << "Candidate Key Lengths:\n";
+    for(auto &p : total_factors) {
+        cout << "Length: " << p.first
+             << "  Score: " << p.second << endl;
+    }
+}
 int main(){
 
   ifstream file("ciphertext.txt");
@@ -63,9 +86,7 @@ int main(){
 
   string final=clean_ciphertext(ciphertext);
 
-  unordered_map<string,vector<int>>len_3=find_repeated_patterns(3,final);
-  unordered_map<string,vector<int>>len_4=find_repeated_patterns(4,final);
-  unordered_map<string,vector<int>>len_5=find_repeated_patterns(5,final);
+  kasiski(final);
 
   return 0;
 }
